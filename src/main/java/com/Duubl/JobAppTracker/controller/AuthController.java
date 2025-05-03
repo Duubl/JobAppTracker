@@ -28,12 +28,15 @@ public class AuthController {
 
         // --- !!! Replace this check with Spring Security or proper validation !!! ---
         if (HARDCODED_EMAIL.equals(loginRequest.getEmail()) && HARDCODED_PASS.equals(loginRequest.getPassword())) {
+            
             // Successful login
             System.out.println("Login successful for email: " + loginRequest.getEmail());
+
             // In a real app, you would generate a session or JWT token here
             LoginResponse response = new LoginResponse("Login Successful", loginRequest.getEmail());
             return ResponseEntity.ok(response);
         } else {
+
             // Failed login
             System.out.println("Login failed for email: " + loginRequest.getEmail());
              ErrorResponse errorResponse = new ErrorResponse("Invalid email or password");
