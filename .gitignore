@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+*.log
+.idea/
+*.iml
 
 ### STS ###
 .apt_generated
@@ -31,3 +34,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Node / Frontend specific
+src/main/frontend/node/
+src/main/frontend/node_modules/
+src/main/frontend/build/     # If using CRA default output
+src/main/frontend/dist/     # If using Vite default output
+src/main/frontend/.DS_Store
+src/main/frontend/npm-debug.log*
+src/main/frontend/yarn-debug.log*
+src/main/frontend/yarn-error.log*
+.pnp.*
