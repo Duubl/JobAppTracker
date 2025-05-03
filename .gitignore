@@ -45,3 +45,6 @@ src/main/frontend/npm-debug.log*
 src/main/frontend/yarn-debug.log*
 src/main/frontend/yarn-error.log*
 .pnp.*
+
+# H2 Database
+data/*.db
