@@ -56,26 +56,15 @@ public class JobApplication {
     }
 
     public int getId() { return id; }
-
     public void setId(int id) { this.id = id; }
-
     public User getUser() { return user; }
-
     public void setUser(User user) { this.user = user; }
-
     public String getJobTitle() { return job_title; }
-
     public void setJobTitle(String job_title) { this.job_title = job_title; }
-
     public String getDescription() { return description; }
-
     public void setDescription(String description) { this.description = description; }
-
     public String getCompanyName() { return company_name; }
-
     public void setCompanyName(String company_name) { this.company_name = company_name; }
-
     public ApplicationStatus getStatus() { return status; }
-
     public void setStatus(ApplicationStatus status) { this.status = status; }
 }
