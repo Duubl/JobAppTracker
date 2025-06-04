@@ -6,6 +6,22 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(''); // To display success/error messages
 
+        // State to track cursor position
+    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+    // Handle mouse movement over the button
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left; // Cursor x relative to button
+        const y = e.clientY - rect.top; // Cursor y relative to button
+        setCursorPosition({ x, y });
+    };
+
+    // Reset cursor position on mouse leave
+    const handleMouseLeave = () => {
+        setCursorPosition({ x: 0, y: 0 }); // Optional: Reset to avoid persistent gradient
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission which reloads the page
         setMessage(''); // Clear previous messages
@@ -47,7 +63,7 @@ function LoginPage() {
     return (
         <div className="login_container">
             <form onSubmit={handleSubmit} className="login_form">
-                <h2>Login</h2>
+                <h2>Sign In</h2>
                 <div className="form_group">            
                     <input
                         type="text"
@@ -68,7 +84,17 @@ function LoginPage() {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button
+                    type="submit"
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                    style={{
+                        '--x': `${cursorPosition.x}px`,
+                        '--y': `${cursorPosition.y}px`,
+                    }}
+                    >
+                    Login
+                    </button>
                 <p className="register_link">
                     Don&apos;t have an account? <b>Register</b>
                 </p>
