@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './styles/Login.css';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -44,32 +45,35 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
+        <div className="login_container">
+            <form onSubmit={handleSubmit} className="login_form">
+                <h2>Login</h2>
+                <div className="form_group">            
                     <input
                         type="text"
                         id="email"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
+                <div className="form_group">
                     <input
                         type="password"
                         id="password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
                 <button type="submit">Login</button>
+                <p className="register_link">
+                    Don&apos;t have an account? <b>Register</b>
+                </p>
             </form>
-            {message && <p style={{ color: message.startsWith('Login Failed') ? 'red' : 'green' }}>{message}</p>}
+            {message && <p style={{ color: message.startsWith('Login Failed') ? 'red' : 'green'}}>{message}</p>}
         </div>
     );
 }
