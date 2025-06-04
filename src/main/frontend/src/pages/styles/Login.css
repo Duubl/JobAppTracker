@@ -43,20 +43,20 @@
   text-align: center;
 }
 
-.register-link a {
+.register_link a {
   color: #629861;
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.register-link a:hover,
-.register-link a:focus {
+.register_link a:hover,
+.register_link a:focus {
   color: #335033;
   text-decoration: underline;
 }
 
-.register-link a:focus {
+.register_link a:focus {
   outline: 2px solid #629861;
   outline-offset: 2px;
 }

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './styles/Login.css';
+import Toast from '../components/Toast';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState(''); // To display success/error messages
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('info');
 
         // State to track cursor position
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -20,6 +22,12 @@ function LoginPage() {
     // Reset cursor position on mouse leave
     const handleMouseLeave = () => {
         setCursorPosition({ x: 0, y: 0 }); // Optional: Reset to avoid persistent gradient
+    };
+
+    // Clear message
+    const handleCloseToast = () => {
+        setMessage('');
+        setMessageType('info');
     };
 
     const handleSubmit = async (event) => {
@@ -38,27 +46,28 @@ function LoginPage() {
             });
 
             if (response.ok) {
-                const data = await response.json(); // Or response.text() if backend sends plain text
-                setMessage(`Login Successful! Welcome ${data.email || ''}`); // Adjust based on backend response
-                // TODO: Handle successful login (e.g., store token, redirect user)
-                console.log("Login successful:", data);
-            } else {
-                // Try to get error message from backend response body
-                let errorMsg = `Login Failed: ${response.statusText}`;
-                try {
-                    const errorData = await response.json(); // Or response.text()
+                    const data = await response.json();
+                    setMessage(`Login Successful! Welcome ${data.email || ''}`);
+                    setMessageType('success');
+                    console.log('Login successful:', data);
+                } else {
+                    let errorMsg = `Login Failed: ${response.statusText}`;
+                    try {
+                    const errorData = await response.json();
                     errorMsg = `Login Failed: ${errorData.message || response.statusText}`;
-                } catch (e) {
-                    // Ignore if response body is not JSON or empty
+                    } catch (e) {
+                    // Ignore if response body is not JSON
+                    }
+                    setMessage(errorMsg);
+                    setMessageType('error');
+                    console.error('Login failed:', response.status, response.statusText);
                 }
-                setMessage(errorMsg);
-                console.error("Login failed:", response.status, response.statusText);
-            }
-        } catch (error) {
-            setMessage('Login Failed: Network error or server unavailable.');
-            console.error("Network error:", error);
-        }
-    };
+                } catch (error) {
+                setMessage('Login Failed: Network error or server unavailable.');
+                setMessageType('error');
+                console.error('Network error:', error);
+                }
+            };
 
     return (
         <div className="login_container">
@@ -99,7 +108,7 @@ function LoginPage() {
                     Don&apos;t have an account? <b>Register</b>
                 </p>
             </form>
-            {message && <p style={{ color: message.startsWith('Login Failed') ? 'red' : 'green'}}>{message}</p>}
+            <Toast message={message} type={messageType} onClose={handleCloseToast} />
         </div>
     );
 }
