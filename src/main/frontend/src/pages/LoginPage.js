@@ -47,7 +47,7 @@ function LoginPage() {
 
             if (response.ok) {
                     const data = await response.json();
-                    setMessage(`Login Successful! Welcome ${data.email || ''}`);
+                    setMessage(`Login Successful! Welcome ${data.email + '!' || ''}`);
                     setMessageType('success');
                     console.log('Login successful:', data);
                 } else {
