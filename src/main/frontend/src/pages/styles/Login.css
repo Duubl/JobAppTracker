@@ -1,3 +1,14 @@
+.login_page {
+  background-image: linear-gradient(to bottom right, #DFFFDE, #83BA82);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #353535;
+}
+
 .login_container {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles/Login.css';
 import Toast from '../components/Toast';
 
@@ -7,6 +8,7 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('info');
+    const navigate = useNavigate();
 
     // State to track cursor position
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -49,6 +51,9 @@ function LoginPage() {
                 setMessage(`Login successful! Welcome ${data.username || 'User'}!`);
                 setMessageType('success');
                 console.log('Login successful:', data);
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 3000);
             } else {
                 const errorData = await response.json();
                 setMessage(errorData.message || 'Login Failed');
@@ -63,45 +68,47 @@ function LoginPage() {
         };
 
     return (
-        <div className="login_container">
-            <form onSubmit={handleSubmit} className="login_form">
-                <h2>Sign In</h2>
-                <div className="form_group">            
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form_group">
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    style={{
-                        '--x': `${cursorPosition.x}px`,
-                        '--y': `${cursorPosition.y}px`,
-                    }}
-                    >
-                    Login
-                    </button>
-                <p className="register_link">
-                    Don&apos;t have an account? <b>Register</b>
-                </p>
-            </form>
-            <Toast message={message} type={messageType} onClose={handleCloseToast} />
+        <div className="login_page">
+            <div className="login_container">
+                <form onSubmit={handleSubmit} className="login_form">
+                    <h2>Sign In</h2>
+                    <div className="form_group">            
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form_group">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                        style={{
+                            '--x': `${cursorPosition.x}px`,
+                            '--y': `${cursorPosition.y}px`,
+                        }}
+                        >
+                        Login
+                        </button>
+                    <p className="register_link">
+                        Don&apos;t have an account? <b>Register</b>
+                    </p>
+                </form>
+                <Toast message={message} type={messageType} onClose={handleCloseToast} />
+            </div>
         </div>
     );
 }

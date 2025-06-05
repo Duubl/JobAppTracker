@@ -1,15 +1,17 @@
-import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage'; // Import the component
+import Dashboard from './pages/Dashboard';
 import './App.css'; // Or your relevant CSS file
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* You might have other components or routing here */}
-        <LoginPage />
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<LoginPage />} /> {/* Default route */}
+      </Routes>
+    </Router>
   );
 }
 
