@@ -5,14 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.Customizer;
 
 @EnableWebSecurity
 @Configuration
@@ -21,30 +18,48 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+		.csrf().disable()
 			.authorizeHttpRequests((authorize) -> authorize
+				.requestMatchers("/api/login").permitAll()
 				.anyRequest().authenticated()
 			)
-			.httpBasic(Customizer.withDefaults())
-			.formLogin(Customizer.withDefaults());
-
+			.formLogin(form -> form
+				.loginProcessingUrl("/api/login")
+				.successHandler((request, response, authentication) -> {
+					response.setStatus(200);
+					response.getWriter().write("{\"message\": \"Login successful\", \"username\": \"" + authentication.getName() + "\"}");
+				})
+				.failureHandler((request, response, exception) -> {
+					response.setStatus(401);
+					response.getWriter().write("{\"message\": \"Invalid username or password\"}");
+				})
+				.permitAll()
+				)
+				.logout(logout -> logout
+					.logoutUrl("/api/logout")
+					.logoutSuccessHandler((request, response, authentication) -> {
+						response.setStatus(200);
+						response.getWriter().write("{\"message\": \"Logout successful\"}");
+					})
+				);
 		return http.build();
 	}
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		UserBuilder users = User.withDefaultPasswordEncoder();
-		UserDetails user = users
-			.username("user")
-			.password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
-			.roles("USER")
-			.build();
-		UserDetails admin = users
-			.username("admin")
+		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+		manager.createUser(
+			User.withUsername("user")
 			.password("{noop}password")
-			.roles("USER", "ADMIN")
-			.build();
+			.roles("USER")
+			.build());
+		manager.createUser(
+			User.withUsername("admin")
+			.password("{noop}password")
+			.roles("ADMIN")
+			.build());
 
-		return new InMemoryUserDetailsManager(user, admin);
+		return manager;
 	}
 
     @Bean
