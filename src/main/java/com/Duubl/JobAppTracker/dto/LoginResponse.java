@@ -2,11 +2,11 @@ package com.Duubl.JobAppTracker.dto;
 
 public class LoginResponse {
     private String message;
-    private String email;
+    private String username;
 
-    public LoginResponse(String message, String email) {
+    public LoginResponse(String message, String username) {
         this.message = message;
-        this.email = email;
+        this.username = username;
     }
      public LoginResponse(String message) {
         this.message = message;
@@ -14,6 +14,6 @@ public class LoginResponse {
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 }
