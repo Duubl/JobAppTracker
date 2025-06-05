@@ -46,7 +46,7 @@ function LoginPage() {
 
             if (response.ok) {
                 const data = await response.json();
-                setMessage(data.message || 'Login Successful!');
+                setMessage(`Login successful! Welcome ${data.username || 'User'}!`);
                 setMessageType('success');
                 console.log('Login successful:', data);
             } else {
@@ -56,7 +56,7 @@ function LoginPage() {
                 console.error('Login failed:', response.status, response.statusText);
             }
             } catch (error) {
-            setMessage('Login Failed: Network error or server unavailable.');
+            setMessage('Login failed: Network error or server unavailable.');
             setMessageType('error');
             console.error('Network error:', error);
             }
