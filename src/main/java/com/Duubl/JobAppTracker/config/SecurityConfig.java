@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
@@ -38,11 +40,15 @@ public class SecurityConfig {
 			.build();
 		UserDetails admin = users
 			.username("admin")
-			.password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
+			.password("{noop}password")
 			.roles("USER", "ADMIN")
 			.build();
 
 		return new InMemoryUserDetailsManager(user, admin);
 	}
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 }
