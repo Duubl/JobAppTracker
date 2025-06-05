@@ -1,10 +1,22 @@
 import React from 'react';
+import './styles/Dashboard.css'
+import Toolbar from '../components/Toolbar';
+import { FiPlus } from "react-icons/fi";
 
 function Dashboard() {
     return (
-        <div className="dashboard_container">
-            <h2>Welcome to the dashboard!</h2>
-            <p>You have successfully been signed in!</p>
+        <div className="dashboard">
+            <Toolbar></Toolbar>
+            <div className="dashboard_listings_container">
+                <div className="dashboard_listings">
+                    <div className="dashboard_listings_header">
+                        <h2>Job Applications</h2>
+                        <div className="dashboard_button"> 
+                            <FiPlus className="button_icon"/>Add Application
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -53,7 +53,7 @@ function LoginPage() {
                 console.log('Login successful:', data);
                 setTimeout(() => {
                     navigate('/dashboard');
-                }, 3000);
+                }, 1200);
             } else {
                 const errorData = await response.json();
                 setMessage(errorData.message || 'Login Failed');
@@ -76,7 +76,7 @@ function LoginPage() {
                         <input
                             type="text"
                             id="username"
-                            placeholder="username"
+                            placeholder="Username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
