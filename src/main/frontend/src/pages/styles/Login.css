@@ -72,7 +72,7 @@
   outline-offset: 2px;
 }
 
-button {
+.login_form button {
 width: 100%;
   max-width: 300px;
   margin-left: auto;
@@ -89,7 +89,7 @@ width: 100%;
   position: relative;
 }
 
-button:hover {
+.login_form button:hover {
   background: radial-gradient(
     circle at var(--x, 50%) var(--y, 50%),
     #70aa6f 0%,

@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage'; // Import the component
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile'; // Add this import
 import './App.css'; // Or your relevant CSS file
 
 function App() {
@@ -16,6 +17,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             } 
           />

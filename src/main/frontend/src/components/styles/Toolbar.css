@@ -11,6 +11,7 @@
     z-index: 100;
     position: fixed;
     top: 0.5vh;
+    font-weight: 600;
 }
 
 .toolbar_button {
@@ -24,6 +25,10 @@
     text-decoration: none;
     position: relative;
     overflow: hidden;
+}
+
+.toolbar_button:hover {
+    background-color: #eeeeee;
 }
 
 .toolbar_icon {
