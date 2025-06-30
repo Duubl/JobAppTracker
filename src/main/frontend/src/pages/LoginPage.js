@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './styles/Login.css';
@@ -10,14 +10,7 @@ function LoginPage() {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('info');
     const navigate = useNavigate();
-    const { user, login } = useAuth();
-
-    // Redirect if already logged in
-    useEffect(() => {
-        if (user) {
-            navigate('/dashboard');
-        }
-    }, [user, navigate]);
+    const { login } = useAuth();
 
     // State to track cursor position
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
