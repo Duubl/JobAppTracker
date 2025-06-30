@@ -1,12 +1,19 @@
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
 import './styles/Dashboard.css'
 import Toolbar from '../components/Toolbar';
 import { FiPlus } from "react-icons/fi";
 
 function Dashboard() {
+    const { user, logout } = useAuth();
+
+    const handleLogout = async () => {
+        await logout();
+    };
+
     return (
         <div className="dashboard">
-            <Toolbar></Toolbar>
+            <Toolbar onLogout={handleLogout} />
             <div className="dashboard_listings_container">
                 <div className="dashboard_listings">
                     <div className="dashboard_listings_header">

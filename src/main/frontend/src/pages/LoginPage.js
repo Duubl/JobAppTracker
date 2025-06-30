@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './styles/Login.css';
 import Toast from '../components/Toast';
 
@@ -9,6 +10,14 @@ function LoginPage() {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('info');
     const navigate = useNavigate();
+    const { user, login } = useAuth();
+
+    // Redirect if already logged in
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard');
+        }
+    }, [user, navigate]);
 
     // State to track cursor position
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -16,8 +25,8 @@ function LoginPage() {
     // Handle mouse movement over the button
     const handleMouseMove = (e) => {
         const rect = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - rect.left; // Cursor x relative to button
-        const y = e.clientY - rect.top; // Cursor y relative to button
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         setCursorPosition({ x, y });
     };
 
@@ -36,36 +45,19 @@ function LoginPage() {
         event.preventDefault();
         setMessage('');
 
-        try {
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('password', password);
+        const result = await login(username, password);
 
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setMessage(`Login successful! Welcome ${data.username || 'User'}!`);
-                setMessageType('success');
-                console.log('Login successful:', data);
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 1200);
-            } else {
-                const errorData = await response.json();
-                setMessage(errorData.message || 'Login Failed');
-                setMessageType('error');
-                console.error('Login failed:', response.status, response.statusText);
-            }
-            } catch (error) {
-            setMessage('Login failed: Network error or server unavailable.');
+        if (result.success) {
+            setMessage(`Login successful! Welcome ${username}!`);
+            setMessageType('success');
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 1200);
+        } else {
+            setMessage(result.message || 'Login Failed');
             setMessageType('error');
-            console.error('Network error:', error);
-            }
-        };
+        }
+    };
 
     return (
         <div className="login_page">
@@ -100,9 +92,9 @@ function LoginPage() {
                             '--x': `${cursorPosition.x}px`,
                             '--y': `${cursorPosition.y}px`,
                         }}
-                        >
+                    >
                         Login
-                        </button>
+                    </button>
                     <p className="register_link">
                         Don&apos;t have an account? <b>Register</b>
                     </p>
