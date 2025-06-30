@@ -20,4 +20,13 @@ public class UserService {
     public Optional<User> findUserByUsername(String username) {
         return user_repo.findByUsername(username);
     }
+
+    public User createUser(String username, String encodedPassword, String role) {
+        User user = new User(username, encodedPassword, role);
+        return user_repo.save(user);
+    }
+
+    public boolean userExists(String username) {
+        return user_repo.findByUsername(username).isPresent();
+    }
 }
