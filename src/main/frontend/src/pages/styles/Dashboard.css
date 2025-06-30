@@ -29,7 +29,7 @@
     padding: 0.5rem;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
     font-size: calc(6px + 1vmin);
   }
 
