@@ -1,0 +1,52 @@
+.job_application {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-height: 15%;
+    padding: 0.75rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); 
+    font-size: 0.9rem;
+}
+
+.job_application:hover {
+    background-color: rgba(241, 241, 241, 0.95);
+    cursor: pointer;
+}
+
+.job_application_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.job_application .company_info {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 0.5rem;
+    align-self: flex-start;
+    margin: 0.1rem;
+}
+
+.job_application .company_name {
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.job_application .date_applied {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.job_application .status {
+    font-weight: 500;
+    font-size: 1.25rem;
+    margin: 0.1rem;
+    align-self: flex-end;
+}
