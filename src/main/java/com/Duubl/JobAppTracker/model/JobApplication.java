@@ -47,11 +47,14 @@ public class JobApplication {
     @Column(name = "date_applied", nullable = false)
     private LocalDate date_applied;
 
+    @Column(name = "company_location", nullable = false)
+    private CityState company_location;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "job_status")
     private ApplicationStatus status;
 
-    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied) {
+    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied, CityState company_location) {
         this.id = id;
         this.user = user;
         this.job_title = job_title;
@@ -59,6 +62,7 @@ public class JobApplication {
         this.company_name = company_name;
         this.status = status;
         this.date_applied = date_applied;
+        this.company_location = company_location;
     }
 
     public int getId() { return id; }
@@ -75,4 +79,6 @@ public class JobApplication {
     public void setStatus(ApplicationStatus status) { this.status = status; }
     public LocalDate getDateApplied() { return date_applied; }
     public void setDateApplied(LocalDate date_applied) { this.date_applied = date_applied; }
+    public CityState getCompanyLocation() { return company_location; }
+    public void setCompanyLocation(CityState company_location) { this.company_location = company_location; }
 }
