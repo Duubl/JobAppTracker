@@ -1,6 +1,8 @@
 package com.Duubl.JobAppTracker.model;
 
 
+import java.time.LocalDate;
+
 import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
 
 import jakarta.persistence.Column;
@@ -42,17 +44,21 @@ public class JobApplication {
     @Column(name = "company_name", length = 255)
     private String company_name;
 
+    @Column(name = "date_applied", nullable = false)
+    private LocalDate date_applied;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "job_status")
     private ApplicationStatus status;
 
-    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status) {
+    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied) {
         this.id = id;
         this.user = user;
         this.job_title = job_title;
         this.description = description;
         this.company_name = company_name;
         this.status = status;
+        this.date_applied = date_applied;
     }
 
     public int getId() { return id; }
@@ -67,4 +73,6 @@ public class JobApplication {
     public void setCompanyName(String company_name) { this.company_name = company_name; }
     public ApplicationStatus getStatus() { return status; }
     public void setStatus(ApplicationStatus status) { this.status = status; }
+    public LocalDate getDateApplied() { return date_applied; }
+    public void setDateApplied(LocalDate date_applied) { this.date_applied = date_applied; }
 }
