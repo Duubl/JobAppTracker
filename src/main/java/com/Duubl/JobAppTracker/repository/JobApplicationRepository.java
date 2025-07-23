@@ -23,4 +23,8 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     List<JobApplication> findByUserIdAndDateApplied(@Param("userId") int userId, @Param("dateApplied") LocalDate dateApplied);
     @Query("SELECT j FROM JobApplication j WHERE LOWER(j.company_name) = LOWER(:companyName)")
     List<JobApplication> findByCompanyNameIgnoreCase(@Param("companyName") String companyName);
+    List<JobApplication> findByUserAndCity(User user, String city);
+    List<JobApplication> findByUserAndState(User user, String state);
+    List<JobApplication> findByUserAndIsRemote(User user, boolean isRemote);
+    List<JobApplication> findByUserAndCityAndState(User user, String city, String state);
 }

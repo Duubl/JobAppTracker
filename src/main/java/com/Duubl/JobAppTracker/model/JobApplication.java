@@ -47,14 +47,20 @@ public class JobApplication {
     @Column(name = "date_applied", nullable = false)
     private LocalDate date_applied;
 
-    @Column(name = "company_location", nullable = false)
-    private CityState company_location;
+    @Column(name = "city", nullable = false, length = 255)
+    private String city;
+
+    @Column(name = "state", nullable = false, length = 255)
+    private String state;
+
+    @Column(name = "is_remote", nullable = false)
+    private boolean isRemote;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "job_status")
     private ApplicationStatus status;
 
-    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied, CityState company_location) {
+    public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied, String city, String state, boolean isRemote) {
         this.id = id;
         this.user = user;
         this.job_title = job_title;
@@ -62,7 +68,9 @@ public class JobApplication {
         this.company_name = company_name;
         this.status = status;
         this.date_applied = date_applied;
-        this.company_location = company_location;
+        this.city = city;
+        this.state = state;
+        this.isRemote = isRemote;
     }
 
     public int getId() { return id; }
@@ -79,6 +87,10 @@ public class JobApplication {
     public void setStatus(ApplicationStatus status) { this.status = status; }
     public LocalDate getDateApplied() { return date_applied; }
     public void setDateApplied(LocalDate date_applied) { this.date_applied = date_applied; }
-    public CityState getCompanyLocation() { return company_location; }
-    public void setCompanyLocation(CityState company_location) { this.company_location = company_location; }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+    public boolean isRemote() { return isRemote; }
+    public void setRemote(boolean isRemote) { this.isRemote = isRemote; }
 }
