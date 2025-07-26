@@ -24,4 +24,8 @@ public class JobApplicationService {
         public JobApplication saveApplication(JobApplication application) {
             return job_app_repo.save(application);
         }
+
+        public List<JobApplication> getAllApplications() {
+            return job_app_repo.findAll();
+        }
 }

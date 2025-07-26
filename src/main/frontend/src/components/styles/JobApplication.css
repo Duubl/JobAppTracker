@@ -39,6 +39,11 @@
     font-size: 1.25rem;
 }
 
+.job_application .location {
+    color: #666;
+    font-size: 0.9rem;
+}
+
 .job_application .date_applied {
     color: #666;
     font-size: 0.85rem;
