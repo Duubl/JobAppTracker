@@ -1,0 +1,149 @@
+.application_detail_panel {
+    background: white;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); 
+}
+
+.detail_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+}
+
+.detail_header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.detail_header .close_button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.detail_header .close_button:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.detail_content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.detail_section {
+    margin-bottom: 2rem;
+}
+
+.detail_section:last-child {
+    margin-bottom: 0;
+}
+
+.job_title {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.company_name {
+    margin: 0;
+    color: #666;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.detail_item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.detail_item:last-child {
+    margin-bottom: 0;
+}
+
+.detail_icon {
+    color: #629861;
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.detail_label {
+    font-weight: 600;
+    color: #333;
+    margin-right: 0.5rem;
+    min-width: 100px;
+}
+
+.detail_value {
+    color: #666;
+    flex: 1;
+}
+
+.status_badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+}
+
+.description_content {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .detail_header {
+        padding: 1rem;
+    }
+    
+    .detail_content {
+        padding: 1rem;
+    }
+    
+    .job_title {
+        font-size: 1.5rem;
+    }
+    
+    .detail_item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .detail_label {
+        margin-bottom: 0.25rem;
+        min-width: auto;
+    }
+} 

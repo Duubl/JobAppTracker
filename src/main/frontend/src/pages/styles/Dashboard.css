@@ -9,6 +9,34 @@
     color: #353535;
   }
 
+  .dashboard_listings {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .dashboard_detail_panel {
+    flex: 0 0 350px;
+    height: calc(100% - 2rem);
+    animation: slideUp 0.3s ease-out;
+    margin-left: auto;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(2%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   .dashboard_listings_container {
     position: relative;
     display: flex;
@@ -22,15 +50,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
     font-size: calc(6px + 1vmin);
-  }
-
-  .dashboard_listings {
-    height: 100%;
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
+    transition: all 0.3s ease;
   }
 
   .dashboard_listings_header {
@@ -53,6 +73,19 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dashboard_listings_content.focused {
+    align-items: flex-start;
+  }
+
+  .dashboard_listings_content.focused .job_application {
+    width: 70%;
+    transition: width 0.3s ease;
+    transform: translateX(-1.5rem);
   }
 
   .dashboard_button {

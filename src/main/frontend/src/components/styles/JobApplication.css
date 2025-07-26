@@ -12,6 +12,10 @@
     font-size: 0.9rem;
 }
 
+.job_application {
+    cursor: pointer;
+}
+
 .job_application:hover {
     background-color: rgba(241, 241, 241, 0.95);
     cursor: pointer;

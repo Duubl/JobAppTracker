@@ -6,6 +6,7 @@ import { FiPlus } from "react-icons/fi";
 import Button from '../components/Button';
 import JobApplication from '../components/JobApplication';
 import AddApplicationMenu from '../components/ApplicationMenu';
+import ApplicationDetailPanel from '../components/ApplicationDetailPanel';
 
 function Dashboard() {
     const { user, logout } = useAuth();
@@ -13,6 +14,8 @@ function Dashboard() {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [focusedApplication, setFocusedApplication] = useState(null);
+    const [showDetailPanel, setShowDetailPanel] = useState(false);
 
     const handleLogout = async () => {
         await logout();
@@ -57,10 +60,23 @@ function Dashboard() {
         setShowAddMenu(false);
     };
 
+    const handleApplicationClick = (application) => {
+        setFocusedApplication(application);
+        // Delay showing the detail panel until after job applications finish resizing
+        setTimeout(() => {
+            setShowDetailPanel(true);
+        }, 300);
+    };
+
+    const handleCloseDetailPanel = () => {
+        setFocusedApplication(null);
+        setShowDetailPanel(false);
+    };
+
     return (
         <div className="dashboard">
             <Toolbar/>
-            <div className="dashboard_listings_container">
+                                <div className="dashboard_listings_container">
                 <div className="dashboard_listings_header">
                     <h2>Job Applications</h2>
                     <Button onClick={handleAddApplication}> 
@@ -68,7 +84,7 @@ function Dashboard() {
                     </Button>
                 </div>
                 <div className="dashboard_listings">
-                    <div className="dashboard_listings_content">
+                    <div className={`dashboard_listings_content ${focusedApplication ? 'focused' : ''}`}>
                         {loading ? (
                             <div className="loading_message">Loading applications...</div>
                         ) : error ? (
@@ -86,10 +102,19 @@ function Dashboard() {
                                     date_applied={application.date_applied}
                                     status={application.status}
                                     isRemote={application.isRemote}
+                                    onClick={() => handleApplicationClick(application)}
                                 />
                             ))
                         )}
                     </div>
+                    {showDetailPanel && focusedApplication && (
+                        <div className="dashboard_detail_panel">
+                            <ApplicationDetailPanel 
+                                application={focusedApplication} 
+                                onClose={handleCloseDetailPanel} 
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             {showAddMenu && (
