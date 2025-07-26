@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './styles/Dashboard.css'
 import Toolbar from '../components/Toolbar';
@@ -10,6 +10,9 @@ import AddApplicationMenu from '../components/ApplicationMenu';
 function Dashboard() {
     const { user, logout } = useAuth();
     const [showAddMenu, setShowAddMenu] = useState(false);
+    const [applications, setApplications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const handleLogout = async () => {
         await logout();
@@ -20,6 +23,37 @@ function Dashboard() {
     };
 
     const handleCloseAddMenu = () => {
+        setShowAddMenu(false);
+    };
+
+    // Fetch user's applications
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('/api/job-applications/user-applications', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setApplications(data);
+                } else {
+                    setError('Failed to fetch applications!');
+                }
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+                setError('Error loading applications!');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchApplications();
+    }, []);
+
+    const handleApplicationAdded = (newApplication) => {
+        setApplications(prevApplications => [newApplication, ...prevApplications]);
         setShowAddMenu(false);
     };
 
@@ -35,27 +69,31 @@ function Dashboard() {
                 </div>
                 <div className="dashboard_listings">
                     <div className="dashboard_listings_content">
-                        <JobApplication 
-                        job_title="Software Engineer" 
-                        company_name="Google" 
-                        city="Mountain View" 
-                        state="California" 
-                        date_applied="2024-01-01" 
-                        status="Applied" 
-                        isRemote={false} />
-                        <JobApplication 
-                        job_title="Frontend Developer" 
-                        company_name="Microsoft" 
-                        city="" 
-                        state="" 
-                        date_applied="2024-01-15" 
-                        status="Interviewing" 
-                        isRemote={true} />
+                        {loading ? (
+                            <div className="loading_message">Loading applications...</div>
+                        ) : error ? (
+                            <div className="error_message">{error}</div>
+                        ) : applications.length === 0 ? (
+                            <div className="no_applications_message">No applications yet. Click "Add Application" to get started!</div>
+                        ) : (
+                            applications.map((application) => (
+                                <JobApplication
+                                    key={application.id}
+                                    job_title={application.job_title}
+                                    company_name={application.company_name}
+                                    city={application.city}
+                                    state={application.state}
+                                    date_applied={application.date_applied}
+                                    status={application.status}
+                                    isRemote={application.isRemote}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
             {showAddMenu && (
-                <AddApplicationMenu onClose={handleCloseAddMenu} />
+                <AddApplicationMenu onClose={handleCloseAddMenu} onApplicationAdded={handleApplicationAdded} />
             )}
         </div>
     );

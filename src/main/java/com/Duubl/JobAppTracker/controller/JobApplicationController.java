@@ -80,4 +80,47 @@ public class JobApplicationController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(companies);
     }
+
+    @GetMapping("/user-applications")
+    public ResponseEntity<List<JobApplication>> getUserApplications() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> currentUserOpt = userService.findUserByUsername(authentication.getName());
+        if (currentUserOpt.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        User currentUser = currentUserOpt.get();
+        List<JobApplication> applications = jobApplicationService.getApplicationsForUser(currentUser.getId());
+        return ResponseEntity.ok(applications);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<JobApplication> addApplication(@RequestBody JobApplication application) {
+        System.out.println("Received application data: " + application);
+        System.out.println("Job title: " + application.getJobTitle());
+        System.out.println("Company name: " + application.getCompanyName());
+        System.out.println("Date applied: " + application.getDateApplied());
+        System.out.println("City: " + application.getCity());
+        System.out.println("State: " + application.getState());
+        System.out.println("Is remote: " + application.isRemote());
+        System.out.println("Status: " + application.getStatus());
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authentication: " + authentication.getName());
+        
+        Optional<User> currentUserOpt = userService.findUserByUsername(authentication.getName());
+        if (currentUserOpt.isEmpty()) {
+            System.out.println("User not found for username: " + authentication.getName());
+            return ResponseEntity.badRequest().build();
+        }
+        User currentUser = currentUserOpt.get();
+        System.out.println("Found user: " + currentUser.getUsername());
+        
+        application.setUser(currentUser);
+        System.out.println("Application before save: " + application);
+        
+        JobApplication savedApplication = jobApplicationService.saveApplication(application);
+        System.out.println("Saved application: " + savedApplication);
+        
+        return ResponseEntity.ok(savedApplication);
+    }
 } 

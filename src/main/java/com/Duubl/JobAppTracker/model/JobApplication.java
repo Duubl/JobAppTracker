@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,29 +38,42 @@ public class JobApplication {
     private User user;
 
     @Column(name = "job_title", nullable = false, length = 255)
+    @JsonProperty("job_title")
     private String job_title;
 
     @Column(name = "job_description", length = 2000)
+    @JsonProperty("description")
     private String description;
 
     @Column(name = "company_name", length = 255)
+    @JsonProperty("company_name")
     private String company_name;
 
     @Column(name = "date_applied", nullable = false)
+    @JsonProperty("date_applied")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date_applied;
 
     @Column(name = "city", nullable = false, length = 255)
+    @JsonProperty("city")
     private String city;
 
     @Column(name = "state", nullable = false, length = 255)
+    @JsonProperty("state")
     private String state;
 
     @Column(name = "is_remote", nullable = false)
+    @JsonProperty("isRemote")
     private boolean isRemote;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "job_status")
+    @JsonProperty("status")
     private ApplicationStatus status;
+
+    // Default constructor for JPA and JSON deserialization
+    public JobApplication() {
+    }
 
     public JobApplication(int id, User user, String job_title, String description, String company_name, ApplicationStatus status, LocalDate date_applied, String city, String state, boolean isRemote) {
         this.id = id;
@@ -93,4 +108,18 @@ public class JobApplication {
     public void setState(String state) { this.state = state; }
     public boolean isRemote() { return isRemote; }
     public void setRemote(boolean isRemote) { this.isRemote = isRemote; }
+
+    @Override
+    public String toString() {
+        return "JobApplication{" +
+                "id=" + id +
+                ", job_title='" + job_title + '\'' +
+                ", company_name='" + company_name + '\'' +
+                ", date_applied=" + date_applied +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", isRemote=" + isRemote +
+                ", status=" + status +
+                '}';
+    }
 }

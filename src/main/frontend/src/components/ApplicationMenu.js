@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles/ApplicationMenu.css';
 import Button from './Button';
 
-function AddApplicationMenu({ onClose }) {
+function AddApplicationMenu({ onClose, onApplicationAdded }) {
     const [jobTitle, setJobTitle] = useState('');
     const [jobDescription, setJobDescription] = useState('');
     const [companyName, setCompanyName] = useState('');
@@ -10,7 +10,7 @@ function AddApplicationMenu({ onClose }) {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [isRemote, setIsRemote] = useState(false);
-    const [status, setStatus] = useState('applied');
+    const [status, setStatus] = useState('APPLIED');
     
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
@@ -47,27 +47,82 @@ function AddApplicationMenu({ onClose }) {
         fetchAutocompleteData();
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', {
-            jobTitle,
-            jobDescription,
-            companyName,
-            dateApplied,
-            city,
-            state,
-            isRemote,
-            status
-        });
-        if (onClose) {
-            onClose();
+        console.log('Form submitted, starting submission process...');
+        
+        // Check if all required fields are filled
+        if (!jobTitle || !jobDescription || !companyName || !dateApplied || !city || !state) {
+            console.error('Missing required fields:', {
+                jobTitle: !!jobTitle,
+                jobDescription: !!jobDescription,
+                companyName: !!companyName,
+                dateApplied: !!dateApplied,
+                city: !!city,
+                state: !!state
+            });
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        try {
+            const applicationData = {
+                job_title: jobTitle,
+                description: jobDescription,
+                company_name: companyName,
+                date_applied: dateApplied,
+                city: city,
+                state: state,
+                isRemote: isRemote,
+                status: status
+            };
+
+            console.log('Application data to send:', applicationData);
+
+            const url = '/api/job-applications/add';
+            console.log('Making request to:', url);
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(applicationData)
+            });
+
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+
+            if (response.ok) {
+                const newApplication = await response.json();
+                console.log('New application received:', newApplication);
+                if (onApplicationAdded) {
+                    console.log('Calling onApplicationAdded callback');
+                    onApplicationAdded(newApplication);
+                }
+                if (onClose) {
+                    console.log('Calling onClose callback');
+                    onClose();
+                }
+            } else {
+                const errorText = await response.text();
+                console.error('Failed to add application. Status:', response.status, 'Response:', errorText);
+                // TODO: Add error handling/notification
+            }
+        } catch (error) {
+            console.error('Error adding application:', error);
+            // TODO: Add error handling/notification
         }
     };
 
     return (
         <div className="application_menu">
             <div className="application_container">
-                <form onSubmit={handleSubmit} className="application_form">
+                <form onSubmit={(e) => {
+                    console.log('Form onSubmit triggered');
+                    handleSubmit(e);
+                }} className="application_form">
                     <div className="form_header">
                         <button type="button" onClick={onClose} className="close_button">×</button>
                     </div>
@@ -160,8 +215,7 @@ function AddApplicationMenu({ onClose }) {
                         id="is_remote" 
                         name="is_remote" 
                         checked={isRemote}
-                        onChange={(e) => setIsRemote(e.target.checked)}
-                        required />
+                        onChange={(e) => setIsRemote(e.target.checked)}/>
                     </div>
                     <div className="form_group">
                         <label htmlFor="status">Status</label>
@@ -171,11 +225,13 @@ function AddApplicationMenu({ onClose }) {
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             required>
-                            <option value="applied">Applied</option>
-                            <option value="interviewing">Interviewing</option>
-                            <option value="offer">Offer</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="withdrawn">Withdrawn</option>
+                            <option value="APPLIED">Applied</option>
+                            <option value="SCREENING">Screening</option>
+                            <option value="INTERVIEWING">Interviewing</option>
+                            <option value="OFFER_RECEIVED">Offer Received</option>
+                            <option value="REJECTED">Rejected</option>
+                            <option value="WITHDRAWN">Withdrawn</option>
+                            <option value="HIRED">Hired</option>
                         </select>
                     </div>
                     <div className="form_group">
