@@ -106,8 +106,7 @@ function Dashboard() {
                                 />
                             ))
                         )}
-                    </div>
-                    {showDetailPanel && focusedApplication && (
+                        {showDetailPanel && focusedApplication && (
                         <div className="dashboard_detail_panel">
                             <ApplicationDetailPanel 
                                 application={focusedApplication} 
@@ -115,6 +114,7 @@ function Dashboard() {
                             />
                         </div>
                     )}
+                    </div>
                 </div>
             </div>
             {showAddMenu && (

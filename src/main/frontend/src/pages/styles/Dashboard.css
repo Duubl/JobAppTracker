@@ -20,10 +20,11 @@
   }
 
   .dashboard_detail_panel {
-    flex: 0 0 350px;
-    height: calc(100% - 2rem);
+    position: absolute;
+    right: -1.5rem;
+    width: 350px;
     animation: slideUp 0.3s ease-out;
-    margin-left: auto;
+    z-index: 10;
   }
 
   @keyframes slideUp {
@@ -82,8 +83,15 @@
     align-items: flex-start;
   }
 
+  .dashboard_listings_content .job_application {
+    align-self: flex-start;
+    width: 100%;
+    transition: width 0.3s ease;
+    transform: translateX(-1.5rem);
+  }
+
   .dashboard_listings_content.focused .job_application {
-    width: 70%;
+    width: 65%;
     transition: width 0.3s ease;
     transform: translateX(-1.5rem);
   }
