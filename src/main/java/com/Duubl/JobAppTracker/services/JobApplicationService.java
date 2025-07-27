@@ -1,6 +1,7 @@
 package com.Duubl.JobAppTracker.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,9 @@ public class JobApplicationService {
 
         public List<JobApplication> getAllApplications() {
             return job_app_repo.findAll();
+        }
+
+        public Optional<JobApplication> getApplicationById(Integer id) {
+            return job_app_repo.findById(id);
         }
 }

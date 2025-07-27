@@ -123,6 +123,32 @@
     overflow-y: auto;
 }
 
+.edit_button {
+    width: 100%;
+    margin-top: 1rem;
+    background-color: #629861;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.edit_button:hover {
+    background-color: #518650;
+}
+
+.edit_button .button_icon {
+    font-size: 1.1rem;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .detail_header {

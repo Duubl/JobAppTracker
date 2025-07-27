@@ -123,4 +123,48 @@ public class JobApplicationController {
         
         return ResponseEntity.ok(savedApplication);
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<JobApplication> updateApplication(@PathVariable Integer id, @RequestBody JobApplication application) {
+        System.out.println("Updating application with ID: " + id);
+        System.out.println("Received application data: " + application);
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> currentUserOpt = userService.findUserByUsername(authentication.getName());
+        if (currentUserOpt.isEmpty()) {
+            System.out.println("User not found for username: " + authentication.getName());
+            return ResponseEntity.badRequest().build();
+        }
+        User currentUser = currentUserOpt.get();
+        
+        // Get the existing application
+        Optional<JobApplication> existingApplicationOpt = jobApplicationService.getApplicationById(id);
+        if (existingApplicationOpt.isEmpty()) {
+            System.out.println("Application not found with ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+        
+        JobApplication existingApplication = existingApplicationOpt.get();
+        
+        // Verify the application belongs to the current user
+        if (existingApplication.getUser().getId() != currentUser.getId()) {
+            System.out.println("Application does not belong to current user");
+            return ResponseEntity.status(403).build();
+        }
+        
+        // Update the application fields
+        existingApplication.setJobTitle(application.getJobTitle());
+        existingApplication.setDescription(application.getDescription());
+        existingApplication.setCompanyName(application.getCompanyName());
+        existingApplication.setDateApplied(application.getDateApplied());
+        existingApplication.setCity(application.getCity());
+        existingApplication.setState(application.getState());
+        existingApplication.setRemote(application.isRemote());
+        existingApplication.setStatus(application.getStatus());
+        
+        System.out.println("Updated application: " + existingApplication);
+        
+        JobApplication updatedApplication = jobApplicationService.saveApplication(existingApplication);
+        return ResponseEntity.ok(updatedApplication);
+    }
 } 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { FiX, FiMapPin, FiCalendar, FiBriefcase, FiFileText } from 'react-icons/fi';
+import { FiX, FiMapPin, FiCalendar, FiBriefcase, FiFileText, FiEdit } from 'react-icons/fi';
 import './styles/ApplicationDetailPanel.css';
+import Button from './Button';
 
-function ApplicationDetailPanel({ application, onClose }) {
+function ApplicationDetailPanel({ application, onClose, onEditApplication }) {
     if (!application) return null;
 
     const formatDate = (dateString) => {
@@ -25,6 +26,12 @@ function ApplicationDetailPanel({ application, onClose }) {
             'HIRED': '#4CAF50'
         };
         return statusColors[status] || '#666';
+    };
+
+    const handleEditClick = () => {
+        if (onEditApplication) {
+            onEditApplication(application);
+        }
     };
 
     return (
@@ -80,6 +87,13 @@ function ApplicationDetailPanel({ application, onClose }) {
                         </div>
                     </div>
                 )}
+
+                <div className="detail_section">
+                    <Button onClick={handleEditClick} className="edit_button">
+                        <FiEdit className="button_icon" />
+                        Edit Application
+                    </Button>
+                </div>
             </div>
         </div>
     );

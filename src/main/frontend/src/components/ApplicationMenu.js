@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './styles/ApplicationMenu.css';
 import Button from './Button';
 
-function AddApplicationMenu({ onClose, onApplicationAdded }) {
-    const [jobTitle, setJobTitle] = useState('');
-    const [jobDescription, setJobDescription] = useState('');
-    const [companyName, setCompanyName] = useState('');
-    const [dateApplied, setDateApplied] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [isRemote, setIsRemote] = useState(false);
-    const [status, setStatus] = useState('APPLIED');
+function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditing = false }) {
+    const [jobTitle, setJobTitle] = useState(initialData?.job_title || '');
+    const [jobDescription, setJobDescription] = useState(initialData?.description || '');
+    const [companyName, setCompanyName] = useState(initialData?.company_name || '');
+    const [dateApplied, setDateApplied] = useState(initialData?.date_applied || '');
+    const [city, setCity] = useState(initialData?.city || '');
+    const [state, setState] = useState(initialData?.state || '');
+    const [isRemote, setIsRemote] = useState(initialData?.isRemote || false);
+    const [status, setStatus] = useState(initialData?.status || 'APPLIED');
     
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
@@ -79,11 +79,13 @@ function AddApplicationMenu({ onClose, onApplicationAdded }) {
 
             console.log('Application data to send:', applicationData);
 
-            const url = '/api/job-applications/add';
+            const url = isEditing 
+                ? `/api/job-applications/update/${initialData.id}`
+                : '/api/job-applications/add';
             console.log('Making request to:', url);
 
             const response = await fetch(url, {
-                method: 'POST',
+                method: isEditing ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -95,11 +97,11 @@ function AddApplicationMenu({ onClose, onApplicationAdded }) {
             console.log('Response ok:', response.ok);
 
             if (response.ok) {
-                const newApplication = await response.json();
-                console.log('New application received:', newApplication);
+                const updatedApplication = await response.json();
+                console.log('Application received:', updatedApplication);
                 if (onApplicationAdded) {
                     console.log('Calling onApplicationAdded callback');
-                    onApplicationAdded(newApplication);
+                    onApplicationAdded(updatedApplication);
                 }
                 if (onClose) {
                     console.log('Calling onClose callback');
@@ -107,11 +109,11 @@ function AddApplicationMenu({ onClose, onApplicationAdded }) {
                 }
             } else {
                 const errorText = await response.text();
-                console.error('Failed to add application. Status:', response.status, 'Response:', errorText);
+                console.error('Failed to save application. Status:', response.status, 'Response:', errorText);
                 // TODO: Add error handling/notification
             }
         } catch (error) {
-            console.error('Error adding application:', error);
+            console.error('Error saving application:', error);
             // TODO: Add error handling/notification
         }
     };
@@ -124,6 +126,7 @@ function AddApplicationMenu({ onClose, onApplicationAdded }) {
                     handleSubmit(e);
                 }} className="application_form">
                     <div className="form_header">
+                        <h2>{isEditing ? 'Edit Application' : 'Add Application'}</h2>
                         <button type="button" onClick={onClose} className="close_button">×</button>
                     </div>
                     <div className="form_group">

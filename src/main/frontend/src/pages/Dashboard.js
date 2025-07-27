@@ -16,6 +16,7 @@ function Dashboard() {
     const [error, setError] = useState(null);
     const [focusedApplication, setFocusedApplication] = useState(null);
     const [showDetailPanel, setShowDetailPanel] = useState(false);
+    const [editingApplication, setEditingApplication] = useState(null);
 
     const handleLogout = async () => {
         await logout();
@@ -27,6 +28,7 @@ function Dashboard() {
 
     const handleCloseAddMenu = () => {
         setShowAddMenu(false);
+        setEditingApplication(null);
     };
 
     // Fetch user's applications
@@ -56,7 +58,18 @@ function Dashboard() {
     }, []);
 
     const handleApplicationAdded = (newApplication) => {
-        setApplications(prevApplications => [newApplication, ...prevApplications]);
+        if (editingApplication) {
+            // Update existing application
+            setApplications(prevApplications => 
+                prevApplications.map(app => 
+                    app.id === newApplication.id ? newApplication : app
+                )
+            );
+            setEditingApplication(null);
+        } else {
+            // Add new application
+            setApplications(prevApplications => [newApplication, ...prevApplications]);
+        }
         setShowAddMenu(false);
     };
 
@@ -73,10 +86,17 @@ function Dashboard() {
         setShowDetailPanel(false);
     };
 
+    const handleEditApplication = (application) => {
+        setEditingApplication(application);
+        setShowAddMenu(true);
+        setShowDetailPanel(false);
+        setFocusedApplication(null);
+    };
+
     return (
         <div className="dashboard">
             <Toolbar/>
-                                <div className="dashboard_listings_container">
+            <div className="dashboard_listings_container">
                 <div className="dashboard_listings_header">
                     <h2>Job Applications</h2>
                     <Button onClick={handleAddApplication}> 
@@ -110,7 +130,8 @@ function Dashboard() {
                         <div className="dashboard_detail_panel">
                             <ApplicationDetailPanel 
                                 application={focusedApplication} 
-                                onClose={handleCloseDetailPanel} 
+                                onClose={handleCloseDetailPanel}
+                                onEditApplication={handleEditApplication}
                             />
                         </div>
                     )}
@@ -118,7 +139,12 @@ function Dashboard() {
                 </div>
             </div>
             {showAddMenu && (
-                <AddApplicationMenu onClose={handleCloseAddMenu} onApplicationAdded={handleApplicationAdded} />
+                <AddApplicationMenu 
+                    onClose={handleCloseAddMenu} 
+                    onApplicationAdded={handleApplicationAdded}
+                    initialData={editingApplication}
+                    isEditing={!!editingApplication}
+                />
             )}
         </div>
     );
