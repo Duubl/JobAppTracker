@@ -7,7 +7,10 @@ function ApplicationDetailPanel({ application, onClose, onEditApplication }) {
     if (!application) return null;
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
+        // Parse the date as local time, not UTC
+        const [year, month, day] = dateString.split('-').map(Number);
+        const date = new Date(year, month - 1, day); // month is 0-indexed in JavaScript
+        
         return date.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
