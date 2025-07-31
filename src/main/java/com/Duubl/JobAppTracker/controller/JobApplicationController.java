@@ -167,4 +167,33 @@ public class JobApplicationController {
         JobApplication updatedApplication = jobApplicationService.saveApplication(existingApplication);
         return ResponseEntity.ok(updatedApplication);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteApplication(@PathVariable Integer id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> currentUserOpt = userService.findUserByUsername(authentication.getName());
+        if (currentUserOpt.isEmpty()) {
+            System.out.println("User not found for username: " + authentication.getName());
+            return ResponseEntity.badRequest().build();
+        }
+        User currentUser = currentUserOpt.get();
+        
+        // Get the existing application
+        Optional<JobApplication> existingApplicationOpt = jobApplicationService.getApplicationById(id);
+        if (existingApplicationOpt.isEmpty()) {
+            System.out.println("Application not found with ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+        
+        JobApplication existingApplication = existingApplicationOpt.get();
+        
+        // Verify the application belongs to the current user
+        if (existingApplication.getUser().getId() != currentUser.getId()) {
+            System.out.println("Application does not belong to current user");
+            return ResponseEntity.status(403).build();
+        }
+
+        jobApplicationService.deleteApplication(existingApplication.getId());
+        return ResponseEntity.ok().build();
+    }
 } 

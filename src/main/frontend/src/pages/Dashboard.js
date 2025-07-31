@@ -31,6 +31,26 @@ function Dashboard() {
         setEditingApplication(null);
     };
 
+    const handleDeleteApplication = async (application) => {
+        try {
+            const response = await fetch(`/api/job-applications/delete/${application.id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                setApplications(prevApplications => prevApplications.filter(app => app.id !== application.id));
+                setShowAddMenu(false);
+                setEditingApplication(null);
+                setFocusedApplication(null);
+            } else {
+                console.error('Failed to delete application');
+            }
+        } catch (error) {
+            console.error('Error deleting application:', error);
+        }
+    };
+
     // Fetch user's applications
     useEffect(() => {
         const fetchApplications = async () => {
@@ -144,6 +164,7 @@ function Dashboard() {
                     onApplicationAdded={handleApplicationAdded}
                     initialData={editingApplication}
                     isEditing={!!editingApplication}
+                    onDelete={handleDeleteApplication}
                 />
             )}
         </div>

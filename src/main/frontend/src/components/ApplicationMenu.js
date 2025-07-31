@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles/ApplicationMenu.css';
 import Button from './Button';
 
-function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditing = false }) {
+function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditing = false, onDelete}) {
     const [jobTitle, setJobTitle] = useState(initialData?.job_title || '');
     const [jobDescription, setJobDescription] = useState(initialData?.description || '');
     const [companyName, setCompanyName] = useState(initialData?.company_name || '');
@@ -249,6 +249,11 @@ function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditin
                     <div className="form_group">
                         <Button type="submit">Save Changes</Button>
                     </div>
+                    {isEditing && (
+                        <div className="form_group">
+                            <Button type="button" onClick={() => onDelete(initialData)}>Delete Application</Button>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

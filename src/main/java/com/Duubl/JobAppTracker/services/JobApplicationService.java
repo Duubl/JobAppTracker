@@ -33,4 +33,8 @@ public class JobApplicationService {
         public Optional<JobApplication> getApplicationById(Integer id) {
             return job_app_repo.findById(id);
         }
+
+        public void deleteApplication(Integer id) {
+            job_app_repo.deleteById(id);
+        }
 }
