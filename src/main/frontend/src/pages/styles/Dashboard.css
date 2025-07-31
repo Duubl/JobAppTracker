@@ -181,26 +181,6 @@
     box-shadow: 0 0 0 2px rgba(98, 152, 97, 0.2);
   }
 
-  .filter_section.checkbox_section {
-    margin-bottom: 0.5rem;
-  }
-
-  .filter_section.checkbox_section label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #353535;
-  }
-
-  .filter_section.checkbox_section input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    cursor: pointer;
-  }
-
   .filter_actions {
     border-top: 1px solid #eee;
     padding-top: 1rem;
