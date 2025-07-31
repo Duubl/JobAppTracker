@@ -52,14 +52,23 @@ function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditin
         console.log('Form submitted, starting submission process...');
         
         // Check if all required fields are filled
-        if (!jobTitle || !jobDescription || !companyName || !dateApplied || !city || !state) {
+        if (!isRemote) {
+            if (!city || !state) {
+                console.error('Missing required fields:', {
+                    city: !!city,
+                    state: !!state
+                });
+                alert('Please fill in all required fields');
+                return;
+            }
+        }
+        if (!jobTitle || !jobDescription || !companyName || !dateApplied || !status) {
             console.error('Missing required fields:', {
                 jobTitle: !!jobTitle,
                 jobDescription: !!jobDescription,
                 companyName: !!companyName,
                 dateApplied: !!dateApplied,
-                city: !!city,
-                state: !!state
+                status: !!status
             });
             alert('Please fill in all required fields');
             return;
@@ -187,7 +196,7 @@ function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditin
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         list="cities-list"
-                        required />
+                        />
                         <datalist id="cities-list">
                             {cities.map((cityOption, index) => (
                                 <option key={index} value={cityOption} />
@@ -204,7 +213,7 @@ function AddApplicationMenu({ onClose, onApplicationAdded, initialData, isEditin
                         value={state}
                         onChange={(e) => setState(e.target.value)}
                         list="states-list"
-                        required />
+                        />
                         <datalist id="states-list">
                             {states.map((stateOption, index) => (
                                 <option key={index} value={stateOption} />
