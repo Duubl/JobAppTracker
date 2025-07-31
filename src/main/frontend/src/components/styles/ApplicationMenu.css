@@ -89,6 +89,9 @@
 .form_group textarea {
     resize: vertical;
     min-height: 100px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .form_group input[type="checkbox"] {
