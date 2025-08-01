@@ -25,6 +25,7 @@
     width: 350px;
     animation: slideUp 0.3s ease-out;
     z-index: 10;
+    height: 100%;
   }
 
   @keyframes slideUp {
