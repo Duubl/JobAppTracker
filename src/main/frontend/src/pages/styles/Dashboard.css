@@ -53,6 +53,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
     font-size: calc(6px + 1vmin);
     transition: all 0.3s ease;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .dashboard_listings_header {
@@ -235,6 +237,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    padding-bottom: 1rem;
   }
 
   .dashboard_listings_content.focused {
