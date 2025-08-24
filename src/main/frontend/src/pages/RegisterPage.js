@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import './styles/Login.css';
+import './styles/Register.css';
 import Toast from '../components/Toast';
 
-function LoginPage() {
+function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('info');
     const navigate = useNavigate();
-    const { login } = useAuth();
 
     // State to track cursor position
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -38,25 +37,55 @@ function LoginPage() {
         event.preventDefault();
         setMessage('');
 
-        const result = await login(username, password);
+        // Validate passwords match
+        if (password !== confirmPassword) {
+            setMessage('Passwords do not match');
+            setMessageType('error');
+            return;
+        }
 
-        if (result.success) {
-            setMessage(`Login successful! Welcome ${username}!`);
-            setMessageType('success');
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 1200);
-        } else {
-            setMessage(result.message || 'Login Failed');
+        // Validate password length
+        if (password.length < 6) {
+            setMessage('Password must be at least 6 characters long');
+            setMessageType('error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+
+            if (response.ok) {
+                setMessage('Registration successful! Please sign in.');
+                setMessageType('success');
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1500);
+            } else {
+                const errorData = await response.json();
+                setMessage(errorData.message || 'Registration failed');
+                setMessageType('error');
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            setMessage('Registration failed. Please try again.');
             setMessageType('error');
         }
     };
 
     return (
-        <div className="login_page">
-            <div className="login_container">
-                <form onSubmit={handleSubmit} className="login_form">
-                    <h2>Sign In</h2>
+        <div className="register_page">
+            <div className="register_container">
+                <form onSubmit={handleSubmit} className="register_form">
+                    <h2>Register</h2>
                     <div className="form_group">            
                         <input
                             type="text"
@@ -77,6 +106,16 @@ function LoginPage() {
                             required
                         />
                     </div>
+                    <div className="form_group">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                    </div>
                     <button
                         type="submit"
                         onMouseMove={handleMouseMove}
@@ -86,10 +125,10 @@ function LoginPage() {
                             '--y': `${cursorPosition.y}px`,
                         }}
                     >
-                        Login
+                        Register
                     </button>
-                    <p className="register_link">
-                        Don&apos;t have an account? <Link to="/register"><b>Register</b></Link>
+                    <p className="login_link">
+                        Already have an account? <Link to="/login"><b>Sign In</b></Link>
                     </p>
                 </form>
                 <Toast message={message} type={messageType} onClose={handleCloseToast} />
@@ -98,4 +137,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default RegisterPage; 

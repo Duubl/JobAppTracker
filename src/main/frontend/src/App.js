@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { LoadingProvider } from './context/LoadingContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage'; // Import the component
+import RegisterPage from './pages/RegisterPage'; // Import the component
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile'; // Add this import
 import './App.css'; // Or your relevant CSS file
@@ -14,6 +15,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route 
               path="/dashboard" 
               element={
