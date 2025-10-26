@@ -1,9 +1,11 @@
 import React from 'react';
 import './styles/Button.css';
 
-function Button({ children, onClick }) {
+function Button({ children, onClick, variant, disabled }) {
+    const buttonClasses = variant ? `button ${variant}` : 'button';
+    
     return (
-        <button className="button" onClick={onClick}>
+        <button className={buttonClasses} onClick={onClick} disabled={disabled}>
             {children}
         </button>
     );

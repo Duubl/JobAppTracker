@@ -1,5 +1,6 @@
 package com.Duubl.JobAppTracker.controller;
 
+import com.Duubl.JobAppTracker.dto.DeleteResponse;
 import com.Duubl.JobAppTracker.dto.ErrorResponse;
 import com.Duubl.JobAppTracker.dto.LoginRequest;
 import com.Duubl.JobAppTracker.dto.LoginResponse;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,6 +91,27 @@ public class AuthController {
         User user = new User(registerRequest.getUsername(), encodedPassword, "ROLE_USER");
         userService.createUser(user);
         return ResponseEntity.ok(new RegisterResponse("Registration successful for user ", registerRequest.getUsername()));
+    }
+
+    @DeleteMapping("/auth/delete")
+    public ResponseEntity<?> deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication != null && authentication.isAuthenticated() && 
+            !"anonymousUser".equals(authentication.getName())) {
+            try {
+                String username = authentication.getName();
+                userService.deleteUser(username);
+                return ResponseEntity.ok(new DeleteResponse("User deleted successfully"));
+            } catch (Exception e) {
+                System.out.println("Error deleting user: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Failed to delete user"));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("Unauthorized to delete user"));
+        }
     }
 
     @PostMapping("/logout")

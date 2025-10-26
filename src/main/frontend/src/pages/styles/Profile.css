@@ -55,3 +55,128 @@
     align-items: center;
     height: 10%;
 }
+
+/* Delete Modal Styles */
+.delete_modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.delete_modal {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.delete_modal_header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff3cd;
+}
+
+.alert_icon {
+    font-size: 2rem;
+    color: #ff9800;
+}
+
+.delete_modal_header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.delete_modal_content {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.warning_text {
+    color: #d32f2f;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.confirmation_text {
+    margin-bottom: 0.75rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.required_text_box {
+    background-color: #f5f5f5;
+    border: 2px solid #629861;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.required_text_box p {
+    margin: 0;
+    font-family: monospace;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.confirmation_input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.confirmation_input:focus {
+    outline: none;
+    border-color: #629861;
+    box-shadow: 0 0 0 2px rgba(98, 152, 97, 0.2);
+}
+
+.delete_modal_actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.cancel_button {
+    background-color: #757575;
+    color: white;
+}
+
+.cancel_button:hover {
+    background-color: #616161;
+}
+
+.confirm_button {
+    background-color: #f44336;
+    color: white;
+}
+
+.confirm_button:hover:not(:disabled) {
+    background-color: #d32f2f;
+}
+
+.confirm_button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

@@ -33,4 +33,17 @@ public class UserService {
     public boolean userExists(String username) {
         return user_repo.findByUsername(username).isPresent();
     }
+
+    public void deleteUser(String username) {
+        Optional<User> user = user_repo.findByUsername(username);
+        if (user.isPresent()) {
+            user_repo.delete(user.get());
+        } else {
+            throw new RuntimeException("User not found: " + username);
+        }
+    }
+
+    public void deleteUser(User user) {
+        user_repo.delete(user);
+    }
 }

@@ -24,3 +24,21 @@
     margin-right: 0.5rem;
     vertical-align: sub;
 }
+
+.button.red {
+    background-color: #bb3b31;
+}
+
+.button.red:hover {
+    background-color: #992020;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.button:disabled:hover {
+    background-color: #ccc;
+}
