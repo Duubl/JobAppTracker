@@ -3,10 +3,16 @@ package com.Duubl.JobAppTracker.controller;
 import com.Duubl.JobAppTracker.dto.ErrorResponse;
 import com.Duubl.JobAppTracker.dto.LoginRequest;
 import com.Duubl.JobAppTracker.dto.LoginResponse;
+import com.Duubl.JobAppTracker.dto.RegisterRequest;
+import com.Duubl.JobAppTracker.dto.RegisterResponse;
+import com.Duubl.JobAppTracker.model.User;
+import com.Duubl.JobAppTracker.services.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +26,14 @@ import java.util.Map;
 @RequestMapping("/api") // Base path for API endpoints
 public class AuthController {
 
-    // --- VERY INSECURE - FOR DEMO ONLY ---
-    private final String HARDCODED_USERNAME = "user";
-    private final String HARDCODED_PASS = "password";
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     // --- Replace with actual authentication logic using Spring Security ---
 
     @PostMapping("/login")
@@ -31,7 +42,9 @@ public class AuthController {
         System.out.println("Login attempt for username: " + loginRequest.getUsername()); // Log attempt
 
         // --- !!! Replace this check with Spring Security or proper validation !!! ---
-        if (HARDCODED_USERNAME.equals(loginRequest.getUsername()) && HARDCODED_PASS.equals(loginRequest.getPassword())) {
+        if (userService.findUserByUsername(loginRequest.getUsername()).isPresent() 
+        && passwordEncoder.matches(loginRequest.getPassword(), 
+        userService.findUserByUsername(loginRequest.getUsername()).get().getPassword())) {
             
             // Successful login
             System.out.println("Login successful for username: " + loginRequest.getUsername());
@@ -64,6 +77,18 @@ public class AuthController {
             response.put("authenticated", false);
             return ResponseEntity.ok(response);
         }
+    }
+
+    @PostMapping("/auth/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        System.out.println("Register attempt for username: " + registerRequest.getUsername());
+        if (userService.findUserByUsername(registerRequest.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("Username already exists"));
+        }
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+        User user = new User(registerRequest.getUsername(), encodedPassword, "ROLE_USER");
+        userService.createUser(user);
+        return ResponseEntity.ok(new RegisterResponse("Registration successful for user ", registerRequest.getUsername()));
     }
 
     @PostMapping("/logout")

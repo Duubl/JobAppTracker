@@ -34,6 +34,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/login").permitAll()
 				.requestMatchers("/api/auth/status").permitAll()
 				.requestMatchers("/api/job-applications/**").authenticated()
+				.requestMatchers("/api/auth/register").permitAll()
 				.anyRequest().authenticated()
 			)
 			.userDetailsService(userDetailsService)

@@ -26,6 +26,10 @@ public class UserService {
         return user_repo.save(user);
     }
 
+    public User createUser(User user) {
+        return user_repo.save(user);
+    }
+
     public boolean userExists(String username) {
         return user_repo.findByUsername(username).isPresent();
     }
